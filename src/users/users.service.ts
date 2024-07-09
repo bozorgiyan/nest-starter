@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from './entities/user.entity';
+import { User } from 'src/interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +23,10 @@ export class UsersService {
 
   findOne(id: string) {
     return this.userModel.findById(id);
+  }
+
+  findByEmail(email: string) {
+    return this.userModel.findOne({ email });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
