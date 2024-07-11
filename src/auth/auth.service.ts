@@ -19,7 +19,22 @@ export class AuthService {
     }
     const payload = { sub: user, username: user._id };
     const accessToken = await this.jwtService.signAsync(payload);
+    console.log(await this.verify(accessToken));
+    
     return { accessToken, user };
+  }
+  async verify(accessToken: string) {
+    try {
+      const data = await this.jwtService.verify(accessToken);
+      const user = this.userService.findOne(data.username);
+      if (!user) {
+        throw new Error();
+      }
+      return user;
+    } catch (error) {
+      throw new HttpException('Authentication Failed', HttpStatus.UNAUTHORIZED);
+    }
+    
   }
 
   // findAll() {
